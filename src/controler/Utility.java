@@ -7,7 +7,15 @@ import java.util.Vector;
  * Created by krzysztof on 03/02/14.
  */
 public class Utility {
-    public static Vector GetData(String query) {
+
+    /**
+     *
+     * get data
+     *
+     * @param query
+     * @return
+     */
+    public static Vector<Vector<Object>> GetData(String query) {
 
         // laduje sterownik
         try {
@@ -23,7 +31,7 @@ public class Utility {
         try {
             // lacze sie z baza
             Connection dbcon = null;
-            dbcon = DriverManager.getConnection("jdbc:postgresql://localhost/baca", "krzysztof", "");
+            dbcon = DriverManager.getConnection("jdbc:postgresql://localhost/usos", "krzysztof", "");
 
             // medium do transmisji danych
             Statement st = dbcon.createStatement();
@@ -41,11 +49,54 @@ public class Utility {
                 ret.add(v);
             }
 
+            //zamykam polaczenie
+            rs.close();
+            st.close();
+            dbcon.close();
+
             return ret;
         } catch(SQLException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    /**
+     * insert data
+     *
+     * @param insert
+     * @return
+     */
+    public static void InsertData(String insert) {
+
+        // laduje sterownik
+        try {
+            Class.forName("org.postgresql.Driver").newInstance();
+        } catch(InstantiationException e) {
+            e.printStackTrace();
+        } catch(IllegalAccessException e) {
+            e.printStackTrace();
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // lacze sie z baza
+            Connection dbcon = null;
+            dbcon = DriverManager.getConnection("jdbc:postgresql://localhost/usos", "krzysztof", "");
+
+            // medium do transmisji danych
+            Statement st = dbcon.createStatement();
+
+            // wykonuje wstawianie
+            st.executeUpdate(insert);
+
+            //zamykam polaczenie
+            st.close();
+            dbcon.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
