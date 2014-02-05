@@ -83,6 +83,8 @@ CREATE TABLE public.groups (
 	CONSTRAINT pk_groups PRIMARY KEY ( id )
  ) ;
 
+
+
 ALTER TABLE public.groups ADD CONSTRAINT ck_2 CHECK ( semester in (1, 2) ) ;
 
 CREATE INDEX idx_groups_1 ON public.groups ( course_id ) ;
@@ -226,6 +228,12 @@ CREATE TABLE public.marks (
 	CONSTRAINT pk_mark PRIMARY KEY ( id )
  ) ;
 
+
+  CREATE TABLE public.passwords (
+  	person_id bigint NOT NULL,
+  	passwd bytea NOT NULL
+  );
+
 ALTER TABLE public.marks ADD CONSTRAINT ck_0 CHECK ( mark = ANY (ARRAY[2.0, 3.0, 3.5, 4.0, 4.5, 5.0]) ) ;
 
 CREATE INDEX idx_marks ON public.marks ( student_id ) ;
@@ -233,6 +241,8 @@ CREATE INDEX idx_marks ON public.marks ( student_id ) ;
 CREATE INDEX idx_marks_0 ON public.marks ( group_id ) ;
 
 CREATE INDEX idx_marks_1 ON public.marks ( staff_id ) ;
+
+ALTER TABLE public.passwords ADD CONSTRAINT fk_passwords_persons FOREIGN KEY ( person_id ) REFERENCES public.persons( id )    ;
 
 ALTER TABLE public.institutes ADD CONSTRAINT fk_institutes_departments FOREIGN KEY ( department_id ) REFERENCES public.departments( id )    ;
 
@@ -696,7 +706,36 @@ create trigger staff_trigger
     instead of insert or update or delete on staff
     for each row
     execute procedure change_staff();
-    
+
+
+--------------------------------------------------------------------
+--                      INSERT PERSON                             --
+--------------------------------------------------------------------
+create or replace function change_person()
+returns trigger as $$
+begin
+	insert into passwords(person_id,passwd) values(new.id,decode(md5(new.pesel), 'hex'));
+    return new;
+end;
+$$ language plpgsql;
+
+create trigger person_trigger
+    after insert on persons
+    for each row
+    execute procedure change_person();
+
+
+--------------------------------------------------------------------
+--                      CHANGE PASSWD                             --
+--------------------------------------------------------------------
+create or replace function change_passwd(_person_id bigint, _passwd text)
+returns void as $$
+begin
+	update passwords set passwd = decode(md5(_passwd), 'hex') where person_id = _id;
+end;
+$$ language plpgsql;
+
+
 
 --------------------------------------------------------------------
 --          STAFF DETAILS trigger - not recommended               --
