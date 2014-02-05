@@ -1,5 +1,8 @@
 package controler;
 
+import app.Database;
+
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.Vector;
 
@@ -15,26 +18,14 @@ public class Utility {
      * @param query
      * @return
      */
-    public static Vector<Vector<Object>> getData(String query) {
-
-        // laduje sterownik
+    public static Vector<Vector<Object>> getData(String query) throws Throwable {
         try {
-            Class.forName("org.postgresql.Driver").newInstance();
-        } catch(InstantiationException e) {
-            e.printStackTrace();
-        } catch(IllegalAccessException e) {
-            e.printStackTrace();
-        } catch(ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            // lacze sie z baza
-            Connection dbcon = null;
-            dbcon = DriverManager.getConnection("jdbc:postgresql:" + Settings.dbUrl, Settings.username, Settings.passwd);
+            Database.lock();
+            if(Database.connection == null)
+                Database.connect();
 
             // medium do transmisji danych
-            Statement st = dbcon.createStatement();
+            Statement st = Database.connection.createStatement();
 
             // wykonuje zapytanie
             ResultSet rs = st.executeQuery(query);
@@ -49,17 +40,17 @@ public class Utility {
                 ret.add(v);
             }
 
-            //zamykam polaczenie
+            // zamykam medium
             rs.close();
             st.close();
-            dbcon.close();
+
+            Database.unlock();
 
             return ret;
         } catch(SQLException e) {
-            e.printStackTrace();
+            Database.unlock();
+            throw e.getCause();
         }
-
-        return null;
     }
 
     /**
@@ -69,33 +60,22 @@ public class Utility {
      * @return
      */
     public static void updateData(String insert) {
-
-        // laduje sterownik
         try {
-            Class.forName("org.postgresql.Driver").newInstance();
-        } catch(InstantiationException e) {
-            e.printStackTrace();
-        } catch(IllegalAccessException e) {
-            e.printStackTrace();
-        } catch(ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            // lacze sie z baza
-            Connection dbcon = null;
-            dbcon = DriverManager.getConnection("jdbc:postgresql:" + Settings.dbUrl, Settings.username, Settings.passwd);
+            Database.lock();
+            if(Database.connection == null)
+                Database.connect();
 
             // medium do transmisji danych
-            Statement st = dbcon.createStatement();
+            Statement st = Database.connection.createStatement();
 
             // wykonuje wstawianie
             st.executeUpdate(insert);
 
             //zamykam polaczenie
             st.close();
-            dbcon.close();
+            Database.unlock();
         } catch(SQLException e) {
+            Database.unlock();
             e.printStackTrace();
         }
     }
