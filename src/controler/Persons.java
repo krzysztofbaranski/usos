@@ -16,7 +16,7 @@ public class Persons {
         StringBuilder query = new StringBuilder("SELECT ");
         for(String s: columns) query.append(s).append(',');
         query.deleteCharAt(query.length()-1).append(" FROM students");
-        return Utility.GetData(query.toString());
+        return Utility.getData(query.toString());
     }
 
     /**
@@ -28,7 +28,7 @@ public class Persons {
         StringBuilder query = new StringBuilder("SELECT ");
         for(String s: columns) query.append(s).append(',');
         query.deleteCharAt(query.length()-1).append(" FROM staff");
-        return Utility.GetData(query.toString());
+        return Utility.getData(query.toString());
     }
 
     /**
@@ -60,7 +60,7 @@ public class Persons {
                 .append((mail != null ? "'"+mail+"'" : "null"))
                 .append(")");
 
-        Utility.InsertData(insert.toString());
+        Utility.updateData(insert.toString());
     }
 
     /**
@@ -99,6 +99,45 @@ public class Persons {
                 .append((cathedral_id != null ? cathedral_id : "null"))
                 .append(")");
 
-        Utility.InsertData(insert.toString());
+        Utility.updateData(insert.toString());
+    }
+
+    /**
+     *
+     * change student
+     *
+     * @param changes: "column1ToChange","newValue1","column2ToChange","newValue2",...
+     */
+    public static void changeStudent(int studentBook, Object... changes) {
+        StringBuilder update = new StringBuilder("UPDATE students SET ");
+
+        for(int i = 0; i < changes.length; i += 2) {
+            update.append(changes[i])
+                    .append("=")
+                    .append(changes[i+1].getClass() == String.class ? "'"+changes[i+1]+"'" : changes[i+1].toString());
+            if(i < changes.length - 2) update.append(",");
+        }
+
+        update.append(" WHERE student_book=").append(studentBook);
+        Utility.updateData(update.toString());
+    }
+
+    /**
+     *
+     * change staff
+     *
+     */
+    public static void changeStaff(String staffCode, Object... changes) {
+        StringBuilder update = new StringBuilder("UPDATE staff SET ");
+
+        for(int i = 0; i < changes.length; i += 2) {
+            update.append(changes[i])
+                    .append("=")
+                    .append(changes[i+1].getClass() == String.class ? "'"+changes[i+1]+"'" : changes[i+1].toString());
+            if(i < changes.length - 2) update.append(",");
+        }
+
+        update.append(" WHERE staff_code=").append(staffCode);
+        Utility.updateData(update.toString());
     }
 }

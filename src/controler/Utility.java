@@ -15,7 +15,7 @@ public class Utility {
      * @param query
      * @return
      */
-    public static Vector<Vector<Object>> GetData(String query) {
+    public static Vector<Vector<Object>> getData(String query) {
 
         // laduje sterownik
         try {
@@ -31,7 +31,7 @@ public class Utility {
         try {
             // lacze sie z baza
             Connection dbcon = null;
-            dbcon = DriverManager.getConnection("jdbc:postgresql://localhost/usos", "krzysztof", "");
+            dbcon = DriverManager.getConnection("jdbc:postgresql:" + Settings.dbUrl, Settings.username, Settings.passwd);
 
             // medium do transmisji danych
             Statement st = dbcon.createStatement();
@@ -63,12 +63,12 @@ public class Utility {
     }
 
     /**
-     * insert data
+     * insert, update or delete data
      *
      * @param insert
      * @return
      */
-    public static void InsertData(String insert) {
+    public static void updateData(String insert) {
 
         // laduje sterownik
         try {
@@ -84,7 +84,7 @@ public class Utility {
         try {
             // lacze sie z baza
             Connection dbcon = null;
-            dbcon = DriverManager.getConnection("jdbc:postgresql://localhost/usos", "krzysztof", "");
+            dbcon = DriverManager.getConnection("jdbc:postgresql:" + Settings.dbUrl, Settings.username, Settings.passwd);
 
             // medium do transmisji danych
             Statement st = dbcon.createStatement();
