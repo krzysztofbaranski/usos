@@ -5,6 +5,6 @@ package controler;
  */
 public class Settings {
     public static String dbUrl = "//localhost/usos";
-    public static String username = "krzysztof";
-    public static String passwd = "";
+    public static String username = "postgres";
+    public static String passwd = "whiskas";
 }
