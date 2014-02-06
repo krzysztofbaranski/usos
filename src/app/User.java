@@ -11,4 +11,5 @@ public class User {
     public static String status;
     public static String address;
     public static String mail;
+    public static String phone;
 }
