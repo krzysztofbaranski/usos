@@ -4,7 +4,6 @@ import app.*;
 import app.Window;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -32,7 +31,7 @@ public class LoginPage {
                     //System.out.println(v);
                     if(v.elementAt(0).elementAt(0) == true) {
                         User.person_id = (Long) v.elementAt(0).elementAt(1);
-                        Window.mainFrame.setContentPane(new MainPage().getRootPane());
+                        Window.mainFrame.setContentPane(new MainPanel().getRootPane());
                         Window.mainFrame.setTitle("USOS - Main Page");
                         Window.mainFrame.repaint();
                         Window.mainFrame.setVisible(true);

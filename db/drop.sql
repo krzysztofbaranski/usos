@@ -47,7 +47,8 @@
  drop table if exists "marks" cascade;
  drop table if exists "staff_details" cascade;
  drop table if exists "statuses" cascade;
- 
+ drop table if exists "passwords" cascade;
+
  drop sequence if exists"departments_id_seq" cascade;
  drop sequence if exists"group_types_id_seq" cascade;
  drop sequence if exists"institutes_id_seq" cascade;

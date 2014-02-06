@@ -1,5 +1,8 @@
 package view;
 
+import app.*;
+import app.Window;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,8 +23,8 @@ public class MainMenu {
     public MainMenu() { wyszukajButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            SearchPanel panel = new SearchPanel();
-            panel.getSearchPanelRoot().setVisible(true);
+            Window.mainFrame.setContentPane(new SearchPanel().getRoot());
+            Window.mainFrame.setVisible(true);
         }
     });}
 }

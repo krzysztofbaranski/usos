@@ -1,6 +1,5 @@
 import app.Window;
 import view.LoginPage;
-import view.MainPage;
 
 import javax.swing.*;
 
@@ -13,7 +12,7 @@ public class Main {
         Window.mainFrame.setContentPane(new LoginPage().getLoginPageRoot());
         Window.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Window.mainFrame.pack();
-        Window.mainFrame.setSize(600,400);
+        Window.mainFrame.setSize(800,500);
         Window.mainFrame.setVisible(true);
     }
 }
