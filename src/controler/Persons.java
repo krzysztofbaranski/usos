@@ -179,6 +179,7 @@ public class Persons {
     		else sb.append(", ");
     		sb.append(i);
     	}
+    	
     	app.User.studentsBranchesIdsAsSQLSet = sb.toString();
     	System.out.println(sb);
     }
