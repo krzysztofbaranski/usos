@@ -1,7 +1,5 @@
 package app;
 
-import controler.Settings;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,7 +18,7 @@ public class Database {
      * Make connection to database
      *
      */
-    public static void connect() {
+    public static void connect() throws SQLException {
         // laduje sterownik
         try {
             Class.forName("org.postgresql.Driver").newInstance();
@@ -32,14 +30,14 @@ public class Database {
         try {
             connection = DriverManager.getConnection("jdbc:postgresql:" + Settings.dbUrl, Settings.username, Settings.passwd);
         } catch(SQLException e) {
-            e.printStackTrace();
+            throw new SQLException("Can't connect to database...");
         }
 
         Thread closeConnection = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while(!connection.isClosed()) {
+                    while(connection != null && !connection.isClosed()) {
                         try {
                             Thread.sleep(1000 * 60 * timeToClose);
                         } catch(InterruptedException e) {

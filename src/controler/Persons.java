@@ -1,5 +1,6 @@
 package controler;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 /**
@@ -45,7 +46,7 @@ public class Persons {
                                   String placeOfBirth,
                                   String address,
                                   String phone,
-                                  String mail) {
+                                  String mail) throws SQLException {
         StringBuilder insert = new StringBuilder("INSERT INTO students(student_book,first_name,second_name,last_name,pesel,date_of_birth,place_of_birth,address,phone,mail) VALUES('");
 
         insert.append(Integer.toString(studentBook)).append('\'').append(',')
@@ -81,7 +82,7 @@ public class Persons {
                                 String academic_title,
                                 Integer room,
                                 String post,
-                                Integer cathedral_id) {
+                                Integer cathedral_id) throws Throwable {
         StringBuilder insert = new StringBuilder("INSERT INTO staff(staff_code,first_name,second_name,last_name,pesel,date_of_birth,place_of_birth,address,phone,mail,academic_title,room,post,cathedral_id) VALUES('");
         insert.append(staffCode).append('\'').append(',')
                 .append('\'').append(fName).append('\'').append(',')
@@ -108,7 +109,7 @@ public class Persons {
      *
      * @param changes: "column1ToChange","newValue1","column2ToChange","newValue2",...
      */
-    public static void changeStudent(int studentBook, Object... changes) {
+    public static void changeStudent(int studentBook, Object... changes) throws SQLException {
         StringBuilder update = new StringBuilder("UPDATE students SET ");
 
         for(int i = 0; i < changes.length; i += 2) {
@@ -127,7 +128,7 @@ public class Persons {
      * change staff
      *
      */
-    public static void changeStaff(String staffCode, Object... changes) {
+    public static void changeStaff(String staffCode, Object... changes) throws SQLException {
         StringBuilder update = new StringBuilder("UPDATE staff SET ");
 
         for(int i = 0; i < changes.length; i += 2) {
@@ -140,4 +141,24 @@ public class Persons {
         update.append(" WHERE staff_code=").append(staffCode);
         Utility.updateData(update.toString());
     }
+
+    /**
+     *
+     * change person
+     *
+     */
+    public static void changePerson(long person_id, Object... changes) throws SQLException {
+        StringBuilder update = new StringBuilder("UPDATE persons SET ");
+
+        for(int i = 0; i < changes.length; i += 2) {
+            update.append(changes[i])
+                    .append("=")
+                    .append(changes[i+1].getClass() == String.class ? "'"+changes[i+1]+"'" : changes[i+1].toString());
+            if(i < changes.length - 2) update.append(",");
+        }
+
+        update.append(" WHERE id=").append(person_id);
+        Utility.updateData(update.toString());
+    }
+
 }

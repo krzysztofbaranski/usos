@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import app.Database;
+import app.Window;
 
+import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.Vector;
@@ -23,11 +25,21 @@ public class Utility {
      * @param query
      * @return
      */
-    public static Vector<Vector<Object>> getDataWithException(String query) throws Throwable {
+    public static Vector<Vector<Object>> getDataWithException(String query) throws SQLException {
         try {
             Database.lock();
             if(Database.connection == null || Database.connection.isClosed())
-                Database.connect();
+                try {
+                    Database.connect();
+                } catch(SQLException e) {
+                    int confirm = JOptionPane.showOptionDialog(Window.mainFrame,
+                            "Nie można połączyć się z bazą danych! Spróbować ponownie?",
+                            "Error", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.ERROR_MESSAGE, null, null, null);
+                    if (confirm == JOptionPane.NO_OPTION) {
+                        System.exit(1);
+                    }
+                }
 
             // medium do transmisji danych
             Statement st = Database.connection.createStatement();
@@ -54,7 +66,7 @@ public class Utility {
             return ret;
         } catch(SQLException e) {
             Database.unlock();
-            throw e.getCause();
+            throw new SQLException();
         }
     }
     
@@ -87,7 +99,7 @@ public class Utility {
      * @param insert
      * @return
      */
-    public static void updateData(String insert) {
+    public static void updateData(String insert) throws SQLException {
         try {
             Database.lock();
             if(Database.connection == null || Database.connection.isClosed())
@@ -104,7 +116,7 @@ public class Utility {
             Database.unlock();
         } catch(SQLException e) {
             Database.unlock();
-            e.printStackTrace();
+            throw new SQLException();
         }
     }
 }

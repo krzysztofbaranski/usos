@@ -732,6 +732,29 @@ create trigger person_trigger
 
 
 --------------------------------------------------------------------
+--                      UPDATE PERSON                             --
+--------------------------------------------------------------------
+create or replace function update_person()
+returns trigger as $$
+begin
+	if old.id != new.id then
+		raise exception 'update id forbidden'
+	end if;
+
+	if new.mail is null or not is_correct_mail(new.mail) then
+		raise exception 'e-mail is invalid';
+	end if;
+	return new;
+end;
+$$ language plpgsql;
+
+create trigger person_trigger
+    before update on persons
+    for each row
+    execute procedure update_person();
+
+
+--------------------------------------------------------------------
 --                      CHANGE PASSWD                             --
 --------------------------------------------------------------------
 create or replace function change_passwd(_person_id bigint, _passwd text)
