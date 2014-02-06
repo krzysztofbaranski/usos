@@ -5,9 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import app.Database;
 
 import javax.xml.crypto.Data;
+
 import java.sql.*;
 import java.util.Vector;
 
@@ -53,6 +55,8 @@ public class Utility {
 
             return ret;
         } catch(SQLException e) {
+        	System.out.println(e);
+        	System.out.println(query);
             Database.unlock();
             throw e.getCause();
         }
@@ -73,10 +77,13 @@ public class Utility {
 	    		return getDataWithException(query);
 	    	} catch (Throwable e){
 	    		//TODO
+	    		System.out.println("in getData ");
+	    		e.printStackTrace();
+	    		System.out.println(e);
 	    		try {
 	    			Thread.sleep(5000);
 	    		} catch (InterruptedException ie){
-	    			//do nothing, no harm will come if the query will be repeated a bit earlier
+	    			//do nothing, no harm will come if the query is repeated a bit earlier
 	    		}
 	    	}
     	}
@@ -87,8 +94,8 @@ public class Utility {
      * @param insert
      * @return
      */
-    public static void updateData(String insert) {
-        try {
+    public static void updateData(String insert) throws SQLException{
+        //try {
             Database.lock();
             if(Database.connection == null)
                 Database.connect();
@@ -102,9 +109,48 @@ public class Utility {
             //zamykam polaczenie
             st.close();
             Database.unlock();
-        } catch(SQLException e) {
+        /*} catch(SQLException e) {
             Database.unlock();
             e.printStackTrace();
-        }
+        }*/
+    }
+    
+    private static String myToString(Object o)
+    {
+    	if(o.getClass() == String.class)
+    		return "\'" + o + "\'";
+    	return o.toString();
+    }
+    
+    public static boolean insertSchema (String relation, Object... values)
+    {
+    	StringBuilder valuesString = new StringBuilder();
+    	StringBuilder columnsString = new StringBuilder();
+    	boolean start = true;
+    	int count = 0;
+    	for (Object o : values)
+    		if(count++ % 2 == 0) {
+    			if(start)
+    				columnsString.append("" + o);
+	    		else
+	    			columnsString.append(", " + o);
+    		}
+    		else {
+    			if(start) {
+    				start = false;
+        			valuesString.append("" + myToString(o));
+    			}
+    			else
+    				valuesString.append(", " + myToString(o));
+    		}
+    			
+	    System.out.println(columnsString);
+	    System.out.println(valuesString);
+    	try {
+    		Utility.updateData("insert into " + relation + " (" + columnsString + ") values (" + valuesString + ")");
+    	} catch (Exception e){
+    		return false;
+    	}
+    	return true;
     }
 }
