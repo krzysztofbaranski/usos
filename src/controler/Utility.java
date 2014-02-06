@@ -28,7 +28,7 @@ public class Utility {
     public static Vector<Vector<Object>> getDataWithException(String query) throws Throwable {
         try {
             Database.lock();
-            if(Database.connection == null)
+            if(Database.connection == null || Database.connection.isClosed())
                 Database.connect();
 
             // medium do transmisji danych
@@ -97,7 +97,7 @@ public class Utility {
     public static void updateData(String insert) throws SQLException{
         //try {
             Database.lock();
-            if(Database.connection == null)
+            if(Database.connection == null || Database.connection.isClosed())
                 Database.connect();
 
             // medium do transmisji danych
