@@ -1,6 +1,5 @@
 package controler;
 
-import java.sql.SQLException;
 import java.util.Vector;
 
 /**
@@ -201,7 +200,12 @@ public class Persons {
         }
 
         update.append(" WHERE id=").append(person_id);
-        Utility.updateData(update.toString());
+        
+        try {
+        	Utility.updateData(update.toString());
+        } catch (Exception e) {
+        	//TODO
+        }
     }
-
+    
 }
