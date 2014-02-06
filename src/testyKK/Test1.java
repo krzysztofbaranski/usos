@@ -7,7 +7,7 @@ import controler.Persons;
 import controler.Utility;
 
 public class Test1 {
-	
+	/*
 	public static void printSth (Vector<Vector<Object>> res) {
 		for (Vector v : res){
 			 for (Object w : v)
@@ -34,5 +34,5 @@ public class Test1 {
 		 System.out.println(Learning.groupDetailsPermission(13, 1));
 		 
 		 
-	}
+	}*/
 }
