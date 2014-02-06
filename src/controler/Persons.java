@@ -61,7 +61,12 @@ public class Persons {
                 .append((mail != null ? "'"+mail+"'" : "null"))
                 .append(")");
 
-        Utility.updateData(insert.toString());
+        try { 
+        	Utility.updateData(insert.toString());
+        } catch (Exception e) {
+        	//TODO
+        }
+        
     }
 
     /**
@@ -100,7 +105,12 @@ public class Persons {
                 .append((cathedral_id != null ? cathedral_id : "null"))
                 .append(")");
 
-        Utility.updateData(insert.toString());
+        try {
+        	Utility.updateData(insert.toString());
+        } catch (Exception e) {
+        	//TODO
+        }
+        
     }
 
     /**
@@ -120,7 +130,11 @@ public class Persons {
         }
 
         update.append(" WHERE student_book=").append(studentBook);
-        Utility.updateData(update.toString());
+        try {
+        	Utility.updateData(update.toString());
+        } catch (Exception e) {
+        	//TODO
+        }
     }
 
     /**
@@ -139,7 +153,36 @@ public class Persons {
         }
 
         update.append(" WHERE staff_code=").append(staffCode);
-        Utility.updateData(update.toString());
+        try {
+        	Utility.updateData(update.toString());
+        } catch (Exception e) {
+        	//TODO
+        }
+    }
+    
+    
+    /**
+     * For a student or one-time student the function shall fill app.User.studentsBranchesIds with all id-s of this student
+     * on different branches and make a corresponding string in app.User.studentsBranchesIdsSQLSet.
+     * For a staff member not being a one-time student no results shall be visible and mentioned string shall remain null.
+     */
+    public static void fillInStudentsBranchesIdsList() {
+    	Vector<Vector<Object>> vecRes = Utility.getData("select id from students_branches "
+    			+ "where student_id = " + app.User.person_id);
+    	for (Vector<Object> v : vecRes)
+    		app.User.studentsBranchesIds.add((Long)v.get(0));
+    	if(app.User.studentsBranchesIds.isEmpty()) return;
+    	boolean start = true;
+    	StringBuilder sb = new StringBuilder();
+    	for (Long i : app.User.studentsBranchesIds)
+    	{
+    		if(start) start = false;
+    		else sb.append(", ");
+    		sb.append(i);
+    	}
+    	
+    	app.User.studentsBranchesIdsAsSQLSet = sb.toString();
+    	System.out.println(sb);
     }
 
     /**

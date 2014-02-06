@@ -69,29 +69,29 @@ public class Utility {
             throw new SQLException();
         }
     }
-    
-    
+
+
     /**
      *  get data or show the message about an error
      * @param query
      * @return
      * @throws Throwable
      */
-    
+
     public static Vector<Vector<Object>> getData(String query) {
-    	while(true)
-    	{
-    		try {
-	    		return getDataWithException(query);
-	    	} catch (Throwable e){
-	    		//TODO
-	    		try {
-	    			Thread.sleep(5000);
-	    		} catch (InterruptedException ie){
-	    			//do nothing, no harm will come if the query will be repeated a bit earlier
-	    		}
-	    	}
-    	}
+        while(true)
+        {
+            try {
+                return getDataWithException(query);
+            } catch (Throwable e){
+                //TODO
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ie){
+                    //do nothing, no harm will come if the query will be repeated a bit earlier
+                }
+            }
+        }
     }
     /**
      * insert, update or delete data
@@ -118,5 +118,44 @@ public class Utility {
             Database.unlock();
             throw new SQLException();
         }
+    }
+
+    private static String myToString(Object o)
+    {
+        if(o.getClass() == String.class)
+            return "\'" + o + "\'";
+        return o.toString();
+    }
+
+    public static boolean insertSchema (String relation, Object... values)
+    {
+        StringBuilder valuesString = new StringBuilder();
+        StringBuilder columnsString = new StringBuilder();
+        boolean start = true;
+        int count = 0;
+        for (Object o : values)
+            if(count++ % 2 == 0) {
+                if(start)
+                    columnsString.append("" + o);
+                else
+                    columnsString.append(", " + o);
+            }
+            else {
+                if(start) {
+                    start = false;
+                    valuesString.append("" + myToString(o));
+                }
+                else
+                    valuesString.append(", " + myToString(o));
+            }
+
+        System.out.println(columnsString);
+        System.out.println(valuesString);
+        try {
+            Utility.updateData("insert into " + relation + " (" + columnsString + ") values (" + valuesString + ")");
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }
