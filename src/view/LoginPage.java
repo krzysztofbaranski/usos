@@ -30,7 +30,7 @@ public class LoginPage {
                             "'), 'hex') = (select passwd from passwords where person_id = (select id from persons where mail = '" +
                             _mail.getText() + "')),(select id from persons where mail = '" + _mail.getText() + "')");
                     //System.out.println(v);
-                    if(v.elementAt(0).elementAt(0) == true) {
+                    if((boolean)v.elementAt(0).elementAt(0) == true) {
 
                         User.person_id = (Long) v.elementAt(0).elementAt(1);
 
