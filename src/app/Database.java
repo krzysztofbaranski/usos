@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class Database {
     private static boolean _lock = false;
     public static Connection connection = null;
-    public static long timeToClose = 60; // in seconds
+    public static long timeToClose = 1; // in minutes
 
 
     /**
@@ -38,22 +38,23 @@ public class Database {
         Thread closeConnection = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(connection != null) {
-                    try {
-                        Thread.sleep(1000 * timeToClose);
-                    } catch(InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if(!_lock && connection != null) {
+                try {
+                    while(!connection.isClosed()) {
                         try {
-                            connection.close();
-                        } catch(SQLException e) {
+                            Thread.sleep(1000 * 60 * timeToClose);
+                        } catch(InterruptedException e) {
                             e.printStackTrace();
                         }
+
+                        if(!_lock && !connection.isClosed()) {
+                            connection.close();
+                        }
                     }
+                } catch(SQLException e) {
+                    e.printStackTrace();
                 }
             }
+
         });
 
         closeConnection.setDaemon(true);
