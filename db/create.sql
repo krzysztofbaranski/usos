@@ -107,6 +107,8 @@ CREATE TABLE public.persons (
 	CONSTRAINT pk_person PRIMARY KEY ( id )
  ) ;
 
+
+
 COMMENT ON COLUMN public.persons.fname IS 'first name';
 
 COMMENT ON COLUMN public.persons.sname IS 'second name';
@@ -233,6 +235,10 @@ CREATE TABLE public.marks (
   	person_id bigint NOT NULL,
   	passwd bytea NOT NULL
   );
+
+insert into statuses values(1,'admin');
+insert into persons(fname,lname,pesel,date_of_birth,place_of_birth,status_id,mail) values('admin','admin','-',current_date,'-',1,'admin');
+insert into passwords values(1,decode(md5('0'), 'hex'));
 
 ALTER TABLE public.marks ADD CONSTRAINT ck_0 CHECK ( mark = ANY (ARRAY[2.0, 3.0, 3.5, 4.0, 4.5, 5.0]) ) ;
 
@@ -895,10 +901,10 @@ FOR EACH ROW EXECUTE PROCEDURE semesters_check();
 
 
 
-INSERT INTO statuses VALUES(1,'student');
-INSERT INTO statuses VALUES(2,'teacher');
-INSERT INTO statuses VALUES(3,'former student');
-INSERT INTO statuses VALUES(4,'former teacher');
+INSERT INTO statuses VALUES(2,'student');
+INSERT INTO statuses VALUES(3,'teacher');
+INSERT INTO statuses VALUES(4,'former student');
+INSERT INTO statuses VALUES(5,'former teacher');
 INSERT INTO students(student_book,first_name,second_name,last_name,pesel,date_of_birth,place_of_birth,address,mail,phone) VALUES(100001,'Krzysztof','Kamil','Adamiak','93123116598','1993-12-31','Warszawa','Warszawa',NULL,'839273645'); 
 INSERT INTO students(student_book,first_name,second_name,last_name,pesel,date_of_birth,place_of_birth,address,mail,phone) VALUES(100002,'Aleksandra','Katarzyna','Kantorowska','94092364849','1994-09-23','Nisko','Nisko',NULL,'546325978'); 
 INSERT INTO students(student_book,first_name,second_name,last_name,pesel,date_of_birth,place_of_birth,address,mail,phone) VALUES(100003,'Blanka','Ilona','Albrychiewicz','94021568940','1994-02-15','Wadowice','Wadowice',NULL,'652974136'); 
@@ -944,6 +950,5 @@ insert into marks (student_id , staff_id, group_id, mark, description, is_final_
 insert into marks (student_id , staff_id, group_id, mark, description, is_final_mark) VALUES (2, 12, 1, 5, 'koncowa-wyk', true);
 insert into marks (student_id , staff_id, group_id, mark, description, is_final_mark) VALUES (1, 12, 2, 3, 'koncowa-cw', true);
 insert into marks (student_id , staff_id, group_id, mark, description, is_final_mark) VALUES (1, 12, 1, 2, 'koncowa-wyk', true);
-
 
                 
