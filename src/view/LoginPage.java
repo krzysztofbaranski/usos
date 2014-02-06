@@ -25,7 +25,7 @@ public class LoginPage {
             public void actionPerformed(ActionEvent e) {
                 Vector<Vector<Object>> v = null;
                 try {
-                    v = controler.Utility.getData("select decode(md5('" +
+                    v = controler.Utility.getDataWithException("select decode(md5('" +
                             _passwd.getText() +
                             "'), 'hex') = (select passwd from passwords where person_id = (select id from persons where mail = '" +
                             _mail.getText() + "')),(select id from persons where mail = '" + _mail.getText() + "')");
@@ -34,7 +34,7 @@ public class LoginPage {
 
                         User.person_id = (Long) v.elementAt(0).elementAt(1);
 
-                        v = Utility.getData("select fname,sname,lname,address,mail,(select name from statuses where id=status_id),phone from persons where id=" + User.person_id);
+                        v = Utility.getDataWithException("select fname,sname,lname,address,mail,(select name from statuses where id=status_id),phone from persons where id=" + User.person_id);
                         User.fName = (String) v.elementAt(0).elementAt(0);
                         User.sName = (String) v.elementAt(0).elementAt(1);
                         User.lName = (String) v.elementAt(0).elementAt(2);

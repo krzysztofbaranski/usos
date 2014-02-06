@@ -82,10 +82,8 @@ public class Learning {
     /**
      *
      * @param groupId value -1 means all the courses and groups
-     * @param allStudents gets marks of all students belonging to this group.
      * Ignored if allCourses is true
      * @param onlyFinal if set, only final/all the final marks shall be returned
-     * @param student_id value -1 means all the students
      * @return
      */
 
