@@ -9,7 +9,7 @@ import java.awt.*;
  * Created by krzysztof on 05/02/14.
  */
 public class MainPanel {
-    private JPanel rootPane;
+    private JPanel root;
 
     public MainPanel() { slider1.addChangeListener(new ChangeListener() {
         @Override
@@ -31,7 +31,7 @@ public class MainPanel {
         return rightPane;
     }
 
-    public JPanel getRootPane() {
-        return rootPane;
+    public JPanel getRoot() {
+        return root;
     }
 }

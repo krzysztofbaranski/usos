@@ -9,7 +9,7 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
         Window.mainFrame = new JFrame("LoginPage");
-        Window.mainFrame.setContentPane(new LoginPage().getLoginPageRoot());
+        Window.mainFrame.setContentPane(new LoginPage().getRoot());
         Window.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Window.mainFrame.pack();
         Window.mainFrame.setSize(800,500);

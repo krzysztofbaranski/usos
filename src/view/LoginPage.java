@@ -2,6 +2,7 @@ package view;
 
 import app.*;
 import app.Window;
+import controler.Utility;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,7 @@ import java.util.Vector;
  * Created by krzysztof on 05/02/14.
  */
 public class LoginPage {
-    private JPanel loginPageRoot;
+    private JPanel root;
     private JFormattedTextField _mail;
     private JPasswordField _passwd;
     private JButton loginButton;
@@ -30,8 +31,21 @@ public class LoginPage {
                             _mail.getText() + "')),(select id from persons where mail = '" + _mail.getText() + "')");
                     //System.out.println(v);
                     if(v.elementAt(0).elementAt(0) == true) {
+
                         User.person_id = (Long) v.elementAt(0).elementAt(1);
-                        Window.mainFrame.setContentPane(new MainPanel().getRootPane());
+
+                        v = Utility.getData("select fname,sname,lname,address,mail,(select name from statuses where id=status_id),phone from persons where id=" + User.person_id);
+                        User.fName = (String) v.elementAt(0).elementAt(0);
+                        User.sName = (String) v.elementAt(0).elementAt(1);
+                        User.lName = (String) v.elementAt(0).elementAt(2);
+                        User.address = (String) v.elementAt(0).elementAt(3);
+                        User.mail = (String) v.elementAt(0).elementAt(4);
+                        User.status = (String) v.elementAt(0).elementAt(5);
+                        User.phone = (String) v.elementAt(0).elementAt(6);
+
+
+
+                        Window.mainFrame.setContentPane(new MainPanel().getRoot());
                         Window.mainFrame.setTitle("USOS - Main Page");
                         Window.mainFrame.repaint();
                         Window.mainFrame.setVisible(true);
@@ -48,7 +62,7 @@ public class LoginPage {
         });
     }
 
-    public JPanel getLoginPageRoot() {
-        return loginPageRoot;
+    public JPanel getRoot() {
+        return root;
     }
 }
