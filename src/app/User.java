@@ -5,4 +5,10 @@ package app;
  */
 public class User {
     public static long person_id;
+    public static String fName;
+    public static String sName;
+    public static String lName;
+    public static String status;
+    public static String address;
+    public static String mail;
 }
