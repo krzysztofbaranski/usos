@@ -15,6 +15,7 @@ public class MainMenu {
     private JButton _search;
     private JButton _account;
     private JButton _courses;
+    private JButton _marks;
     private JButton _settings;
     private JButton _logout;
     private JPanel menu;
@@ -46,6 +47,9 @@ public class MainMenu {
                 Window.mainFrame.setVisible(true);
             }
         });
+
+
+
         _logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,5 +66,14 @@ public class MainMenu {
                 Window.mainFrame.setVisible(true);
             }
         });
+
+        _marks.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window.mainFrame.setContentPane(new MarksPanel().getRoot());
+                Window.mainFrame.setVisible(true);
+            }
+        });
+
     }
 }

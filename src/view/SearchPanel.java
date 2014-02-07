@@ -1,5 +1,7 @@
 package view;
 
+import app.User;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -30,7 +32,7 @@ public class SearchPanel {
     public SearchPanel() { advCheckBox.addChangeListener(new ChangeListener() {
         @Override
         public void stateChanged(ChangeEvent e) {
-            if(advCheckBox.isSelected()) {
+            if (advCheckBox.isSelected()) {
                 advancedSearch.setVisible(true);
             } else {
                 advancedSearch.setVisible(false);

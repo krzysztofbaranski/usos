@@ -1,7 +1,7 @@
 package controler;
 
 import app.Database;
-
+import app.Window;
 import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,7 +61,7 @@ public class Utility {
             return ret;
         } catch(SQLException e) {
             System.out.println(e);
-            System.out.println(query);
+            System.out.println("query " + query);
             Database.unlock();
             throw new SQLException();
         }

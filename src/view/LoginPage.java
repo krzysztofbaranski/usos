@@ -19,7 +19,6 @@ public class LoginPage {
     private JButton loginButton;
 
     public LoginPage() {
-
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,7 +28,7 @@ public class LoginPage {
                             _passwd.getText() +
                             "'), 'hex') = (select passwd from passwords where person_id = (select id from persons where mail = '" +
                             _mail.getText() + "')),(select id from persons where mail = '" + _mail.getText() + "')");
-                    //System.out.println(v);
+                    System.out.println("v" + v);
                     if((boolean)v.elementAt(0).elementAt(0) == true) {
 
                         User.person_id = (Long) v.elementAt(0).elementAt(1);
