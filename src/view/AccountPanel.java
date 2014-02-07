@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Created by krzysztof on 06/02/14.
  */
-public class AccountPanel {
+public class AccountPanel { 
     private JPanel menu;
     private JLabel _name;
     private JLabel _status;
